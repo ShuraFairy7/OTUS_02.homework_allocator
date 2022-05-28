@@ -31,7 +31,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char const* argv[])
         for (auto it = list.begin(); it != list.end(); ++it)
             std::cout << "custom_forward_list with std::allocator, iterator: " << *it << std::endl;
 
-        custom_forward_list<int, custom_allocator<int, 11>> list_with_custom_allocator;
+        custom_forward_list<int, custom_allocator<int, 10>> list_with_custom_allocator;
 
         for (size_t i = 0; i < 10; ++i)
             list_with_custom_allocator.push_front(i);

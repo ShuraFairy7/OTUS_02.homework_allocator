@@ -38,7 +38,7 @@ public:
         initialise();
     }
     
-    custom_allocator(const custom_allocator& rhs) : _pointer_first_free(_in_use)
+    custom_allocator([[maybe_unused]] const custom_allocator& rhs) : _pointer_first_free(_in_use)
     {
         initialise();
     }

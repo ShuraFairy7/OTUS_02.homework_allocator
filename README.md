@@ -1,1 +1,1 @@
-# OTUS_02.homework_allocator
+# OTUS_02.homework_Allocatorator

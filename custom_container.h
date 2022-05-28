@@ -63,27 +63,31 @@ public:
 
 //	Сам контейнер. Односвязный список.
 template<typename T, //	хранимый тип
-	class Allocator = std::allocator<T>> // Распределитель памяти
+	class _Allocator = std::allocator<T>> // Распределитель памяти
 	class custom_forward_list {
-	//	Типы для использования внутри контейнера
+	
+	using allocator_type = _Allocator;
+	using value_type = typename _Allocator::value_type;
+	using size_type = typename _Allocator::size_type;
 	using pointer = T*;
 
 	//	Элемент списка		
 	using ptrNode = list_node<T>*;
 
 	//	Аллокатор для узлов списка
-	typedef  typename Allocator::template rebind<list_node <T> >::other node_allocator;
+	typedef  typename _Allocator::template rebind<list_node <T> >::other node_allocator;
 
 	//Указатель на первый элемент списка
-	ptrNode	_first;
+	ptrNode	_head;
 	//	Указатель на последний элемент списка
-	ptrNode	_last;
+	ptrNode	_tail;
 
 	//	Узел для реализации окончания списка
 	list_node<T> node_end;
 
 	//	Аллокатор для размещения элементов
 	node_allocator 	_allocator;
+	size_type _size;
 
 	//	Выделяем память и размещаем элемент в контейнере
 	ptrNode	_createNode(const T& new_val) {
@@ -99,19 +103,18 @@ template<typename T, //	хранимый тип
 		//std::cout << "next: " << ptr->_next << std::endl;
 		return ptr;
 	};
-
-	//	уничтожаем элемент списка
-	//void _destructElement(ptrElement rem){}
-
+	
 	public:
-		custom_forward_list() :_first(nullptr), _last(nullptr), _allocator() {
+		custom_forward_list() :_head(nullptr), _tail(nullptr), _allocator(), _size(0)
+		{
 			//std::cout << "sizeof list_node: " << sizeof(list_node<T>) << std::endl;
 			//std::cout << "sizeof T: " << sizeof(T) << std::endl;
 		};
 
-		//	Почистить всю выделенную память
-		~custom_forward_list() {
-			auto curr = _first;
+		
+		~custom_forward_list() 
+		{
+			auto curr = _head;
 			while (curr != nullptr) {
 				//std::cout << "curr: " << curr << " next: " << curr->_next << std::endl;
 				auto ptrRemove(curr);
@@ -124,33 +127,38 @@ template<typename T, //	хранимый тип
 				_allocator.deallocate(ptrRemove, 1);
 			}
 		};
-
-		//	Добавляем элемент в конец списка		
+		
 		void push_back(const T& value) 
-		{
-			//	Выделяем память под элемент
+		{			
 			auto newElement = _createNode(value);
 
 			//	Если элементов ещё нет - добавляем первый
-			if (nullptr == _last) {
-				_first = newElement;
-				_last = newElement;
+			if (nullptr == _tail) {
+				_head = newElement;
+				_tail = newElement;
 			}
 			else {
 				//	Если элементы уже есть - редактируем last	
-				_last->_next = newElement;
+				_tail->_next = newElement;
 				//std::cout << "prev: " << _last << " next: " << _last->_next << " _last: " << newElement << std::endl;
-				_last = newElement;
-				_last->_next = nullptr;
+				_tail = newElement;
+				_tail->_next = nullptr;
 			}
+			++_size;
 		};
 
 		onewaylist_const_iterator<T> begin() noexcept {
-			return onewaylist_const_iterator<T>(_first);
+			return onewaylist_const_iterator<T>(_head);
 		}
 		onewaylist_const_iterator<T> end() noexcept {
 			return onewaylist_const_iterator<T>();
 		}
+
+		//const_iterator cbegin() const noexcept { return make_iterator(_head); }
+		//const_iterator cend() const noexcept { return make_iterator(_tail); }
+
+		bool empty() { return _head == nullptr; }
+		size_type size() const { return _size; }
 };
 
 

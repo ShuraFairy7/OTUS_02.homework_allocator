@@ -5,54 +5,47 @@
 #endif
 
 #include <cstddef>
-#include <cstdlib>
-#include <utility>
-#include <array>
-#include <cassert>
-
-//#include <cstddef>
 #include <memory>
 #include <stdexcept>
 #include <algorithm>
 
 //#define USE_PRETTY 1
 
-template <typename T, std::size_t BLOCK_SIZE>
+template <typename _T, std::size_t MEMORY_BLOCK_SIZE>
 class custom_allocator 
 {
-public:
-    //	Allocator traits
-    using 	size_type = size_t;
-    using difference_type	= std::ptrdiff_t; //int;
-    using pointer = T*;
-    using const_pointer = const T*;
-    using reference = T&;
-    using const_reference = const T&;
-    using value_type = T;
+public:    
+    using size_type         = size_t;
+    using difference_type   = int;
+    using pointer           = _T*;
+    using const_pointer     = const _T*;
+    using reference         = _T&;
+    using const_reference   = const _T&;
+    using value_type        = _T;
 
-    custom_allocator() :_allocated(nullptr), _counter(0) {
+    custom_allocator() :_allocated(nullptr), _counter(0) 
+    {
         std::cout << "map allocator constructor" << std::endl;
-        _allocated = std::malloc(BLOCK_SIZE * sizeof(T));
-
-        //	Åñëè âûäåëèòü íå óäàëîñü
-        if (nullptr == _allocated)
-            //	Òîãäà ó íàñ ïðîáëåìû
+        _allocated = std::malloc(MEMORY_BLOCK_SIZE * sizeof(value_type));
+        
+        if (nullptr == _allocated)        
             throw std::bad_alloc();
 
         std::cout << "allocated: " << _allocated << std::endl;
     };
 
-    ~custom_allocator() {
+    ~custom_allocator() 
+    {
         std::cout << "map allocator destructor" << std::endl;
         free(_allocated);
     }
 
-    T* allocate(std::size_t n) {
-        std::cout << "allocate " << n << "*" << sizeof(T) << std::endl;
-        T* res(nullptr);
-
-        //	Âû÷èñëèì àäðåñ 
-        res = reinterpret_cast <T*> (_allocated);
+    pointer allocate(std::size_t n)
+    {
+        std::cout << "allocate " << n << "*" << sizeof(value_type) << std::endl;
+        pointer res(nullptr);
+            
+        res = reinterpret_cast <pointer> (_allocated);
         res += _counter;
         ++_counter;
 
@@ -61,21 +54,24 @@ public:
     };
 
     template<class U, class... Args>
-    void construct(U* p, Args&&... args) {
+    void construct(U* p, Args&&... args) 
+    {
         std::cout << "construct " << p << std::endl;
         new(static_cast<void*>(p)) U(std::forward<Args>(args)...);
     }
 
     template<class U>
-    void destroy(U* p) {
+    void destroy(U* p) 
+    {
         std::cout << "destruct " << p << std::endl;
         p->~U();
     }
 
-    template<class U> struct rebind { typedef custom_allocator<U, BLOCK_SIZE> other; };
+    template<class U> struct rebind { typedef custom_allocator<U, MEMORY_BLOCK_SIZE> other; };
 
-    void deallocate([[maybe_unused]]T* p, std::size_t n) {
-        //p = p;
+    void deallocate([[maybe_unused]] pointer p, std::size_t n)
+    {
+    
         std::cout << "deallocate " << n << std::endl;
         --_counter;
         std::cout << "counter: " << _counter << std::endl;

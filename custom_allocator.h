@@ -139,7 +139,7 @@ public:
 //        std::cout << __PRETTY_FUNCTION__ << std::endl;
 //#endif
         new(p) U(std::forward<Args>(args)...);  // Placement 'new'
-    };
+    }
         
     void destroy(pointer p)
     {

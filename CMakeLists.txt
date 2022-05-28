@@ -32,7 +32,7 @@ if(WITH_BOOST_TEST)
     set_target_properties(test_version PROPERTIES
         CXX_STANDARD 14
         CXX_STANDARD_REQUIRED ON
-        COMPILE_OPTIONS -Wall; 
+        #COMPILE_OPTIONS -Wall; 
     )
 
     set_target_properties(test_version PROPERTIES

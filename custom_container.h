@@ -51,28 +51,31 @@ public:
 	}
 };
 
-template<typename T, class _Allocator = std::allocator<T>> 
+template<typename _T, class _Allocator = std::allocator<_T>> 
 class custom_forward_list 
 {	
-	using allocator_type = _Allocator;
-	using value_type = typename _Allocator::value_type;
-	using size_type = typename _Allocator::size_type;
-	using pointer = T*;	
-	using ptrNode = forward_list_node<T>*;
-	using list_type = custom_forward_list<T, _Allocator>;
-	using iterator = custom_forward_list_iterator<value_type>;
-	using const_iterator = custom_forward_list_iterator<value_type>;
-	
-	using node_allocator = typename _Allocator::template rebind<forward_list_node <T> >::other;
+	using allocator_type	= _Allocator;
+	using value_type		= typename _Allocator::value_type;
+	using size_type			= typename _Allocator::size_type;
+	//using pointer			= T*;	
+	using reference			= typename _Allocator::reference;
+	using const_reference	= typename _Allocator::const_reference;
+	using pointer			= typename _Allocator::pointer;
+	using const_pointer		= typename _Allocator::const_pointer;
+	using ptrNode			= forward_list_node<_T>*;
+	using list_type			= custom_forward_list<_T, _Allocator>;
+	using iterator			= custom_forward_list_iterator<value_type>;
+	using const_iterator	= custom_forward_list_iterator<value_type>;	
+	using node_allocator	= typename _Allocator::template rebind<forward_list_node<_T>>::other;
 	
 	ptrNode	_head;	
 	ptrNode	_tail;	
-	forward_list_node<T> node_end;	
+	forward_list_node<_T> node_end;	
 	node_allocator _allocator;
 	size_type _size;
 
 	//	Выделяем память и размещаем элемент в контейнере
-	ptrNode	_createNode(const T& new_val) {
+	ptrNode	_createNode(const_reference new_val) {
 		//	Выделение памяти для узла списка
 		auto ptr = _allocator.allocate(1);
 		//std::cout << "allocate in: " << ptr << std::endl;
@@ -100,8 +103,7 @@ class custom_forward_list
 			while (curr != nullptr) {
 				//std::cout << "curr: " << curr << " next: " << curr->_next << std::endl;
 				auto ptrRemove(curr);
-				curr = curr->_next;
-				//	По очереди удаляем все элементы списка
+				curr = curr->_next;	
 
 				//std::cout << "deallocate: " << ptrRemove << std::endl;
 				//std::cout << "next: " << ptrRemove->_next << std::endl;
@@ -110,20 +112,19 @@ class custom_forward_list
 			}
 		};
 		
-		void push_back(const T& value) 
+		void push_back(const_reference value)
 		{			
-			auto newElement = _createNode(value);
-
-			//	Если элементов ещё нет - добавляем первый
-			if (nullptr == _tail) {
-				_head = newElement;
-				_tail = newElement;
+			auto _new_element = _createNode(value);
+						
+			if (_tail == nullptr) {
+				_head = _new_element;
+				_tail = _new_element;
 			}
-			else {
-				//	Если элементы уже есть - редактируем last	
-				_tail->_next = newElement;
+			else 
+			{			
+				_tail->_next = _new_element;
 				//std::cout << "prev: " << _last << " next: " << _last->_next << " _last: " << newElement << std::endl;
-				_tail = newElement;
+				_tail = _new_element;
 				_tail->_next = nullptr;
 			}
 			++_size;

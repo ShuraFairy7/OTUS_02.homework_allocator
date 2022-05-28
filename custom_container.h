@@ -88,7 +88,7 @@ private:
 	explicit custom_forward_list_iterator(const link_type& pointee) : _pointee(pointee) { }	
 }; 
 
-template <typename _T, typename _Allocator =  std::allocator<_T>>
+template <typename _T, typename _Allocator>
 class custom_forward_list 
 {
 public:

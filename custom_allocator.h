@@ -49,7 +49,7 @@ public:
         free(_allocated_block);
     }
 
-    pointer allocate(std::size_t n)
+    pointer allocate([[maybe_unused]]std::size_t n)
     {
 //#ifndef USE_PRETTY
 //       std::cout << "allocate: [n = " << n << "]" << std::endl;

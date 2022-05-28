@@ -4,89 +4,72 @@
 #include <stdexcept>
 #include <iterator>
 
-//	Тип для узла списка
 template <typename T>
-struct list_node {
-	list_node* _next;
+struct forward_list_node 
+{
+	forward_list_node* _next;
 	T	_val;
 
-	list_node() { _next = nullptr; _val = T(); };
+	forward_list_node() { _next = nullptr; _val = T(); };
 };
 
-//	Константный итератор для обхода списка
 template<typename T>
 struct onewaylist_const_iterator
 {
-	using _Self = onewaylist_const_iterator<T>;
-
-	//using difference_type = ptrdiff_t;
+	using _iterator = onewaylist_const_iterator<T>;		
 	using iterator_category = std::forward_iterator_tag;
 	using value_type = T;
 	using pointer = const T*;
 	using reference = const T&;
-	//	Значение соответствующего узла в списке
-	list_node<T>* _data;
-	//	Конструктор по умолчанию
-	onewaylist_const_iterator() :_data(nullptr) {
-
-	};
-	//	Конструктор с параметром. Для создания внутри контейнера
-	explicit onewaylist_const_iterator(list_node<T>* ptrNode) :_data(ptrNode) {};
+	using iterator_category = std::forward_iterator_tag;
+	
+	forward_list_node<T>* _data;	//	Значение соответствующего узла в списке
+	
+	onewaylist_const_iterator() :_data(nullptr) { };
+	
+	explicit onewaylist_const_iterator(forward_list_node<T>* ptrNode) :_data(ptrNode) {};
 
 public:
-	//	Получение ссылки на хранимый элемент
-	reference operator*()  {
-		return _data->_val;
-	}
-	//	Получение указателя на хранимый элемент
+	
+	reference operator*()  { return _data->_val; }
+	
 	pointer operator->()  { return &(_data->_val); }
-
-	//Переход к следующему элементу контейнера
-	_Self& operator++() {
+		
+	_iterator& operator++()
+	{ 
 		if (nullptr == _data)	return *this;
-
 		else _data = _data->_next;
-
 		return *this;
 	}
-
-	//Сравнение итераторов для прохода по циклу
-	bool operator==(const _Self& rhs) const {
+	
+	bool operator==(const _iterator& rhs) const {
 		return _data == rhs._data;
 	}
 
-	bool operator!=(const _Self& rhs) const
+	bool operator!=(const _iterator& rhs) const
 	{
 		return _data != rhs._data;
 	}
 };
 
-//	Сам контейнер. Односвязный список.
-template<typename T, //	хранимый тип
-	class _Allocator = std::allocator<T>> // Распределитель памяти
-	class custom_forward_list {
-	
+template<typename T, class _Allocator = std::allocator<T>> 
+class custom_forward_list 
+{	
 	using allocator_type = _Allocator;
 	using value_type = typename _Allocator::value_type;
 	using size_type = typename _Allocator::size_type;
-	using pointer = T*;
+	using pointer = T*;	
+	using ptrNode = forward_list_node<T>*;
 
-	//	Элемент списка		
-	using ptrNode = list_node<T>*;
-
-	//	Аллокатор для узлов списка
-	typedef  typename _Allocator::template rebind<list_node <T> >::other node_allocator;
-
-	//Указатель на первый элемент списка
-	ptrNode	_head;
-	//	Указатель на последний элемент списка
-	ptrNode	_tail;
-
-	//	Узел для реализации окончания списка
-	list_node<T> node_end;
-
-	//	Аллокатор для размещения элементов
-	node_allocator 	_allocator;
+	//using iterator = custom_forward_list_iterator<list_type, pointer, reference >;
+	//using const_iterator = custom_forward_list_iterator<list_type, const_pointer, const_reference>;
+	
+	using node_allocator = typename _Allocator::template rebind<forward_list_node <T> >::other;
+	
+	ptrNode	_head;	
+	ptrNode	_tail;	
+	forward_list_node<T> node_end;	
+	node_allocator _allocator;
 	size_type _size;
 
 	//	Выделяем память и размещаем элемент в контейнере

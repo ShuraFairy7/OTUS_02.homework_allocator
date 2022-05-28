@@ -15,7 +15,6 @@ add_library(allocator_lib lib.cpp)
 set_target_properties(allocator allocator_lib PROPERTIES
         CXX_STANDARD 14
         CXX_STANDARD_REQUIRED ON
-        COMPILE_OPTIONS -Wall
         )
 
 target_include_directories(allocator_lib

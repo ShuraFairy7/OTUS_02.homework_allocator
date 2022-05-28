@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(test_custom_forward_list_iterator)
     int_list.push_back(1);
     int_list.push_back(2);
     auto iterator_begin = int_list.begin();
-    auto iterator_end = int_list.end();
+//    auto iterator_end = int_list.end();
     BOOST_REQUIRE_EQUAL(*iterator_begin, 1);
     //BOOST_REQUIRE_EQUAL(*iterator_end, NULL);
 }

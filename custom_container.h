@@ -21,11 +21,10 @@ struct onewaylist_const_iterator
 	using value_type = T;
 	using pointer = const T*;
 	using reference = const T&;
-	using iterator_category = std::forward_iterator_tag;
 	
 	forward_list_node<T>* _data;	//	Значение соответствующего узла в списке
 	
-	onewaylist_const_iterator() :_data(nullptr) { };
+	onewaylist_const_iterator() :_data{nullptr} { };
 	
 	explicit onewaylist_const_iterator(forward_list_node<T>* ptrNode) :_data(ptrNode) {};
 

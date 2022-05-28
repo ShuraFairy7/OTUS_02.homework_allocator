@@ -14,9 +14,9 @@ struct forward_list_node
 };
 
 template<typename T>
-struct onewaylist_const_iterator
+struct custom_forward_list_iterator
 {
-	using _iterator = onewaylist_const_iterator<T>;		
+	using _iterator = custom_forward_list_iterator<T>;
 	using iterator_category = std::forward_iterator_tag;
 	using value_type = T;
 	using pointer = const T*;
@@ -24,9 +24,9 @@ struct onewaylist_const_iterator
 	
 	forward_list_node<T>* _data;	//	Значение соответствующего узла в списке
 	
-	onewaylist_const_iterator() :_data{nullptr} { };
+	custom_forward_list_iterator() :_data{nullptr} { };
 	
-	explicit onewaylist_const_iterator(forward_list_node<T>* ptrNode) :_data(ptrNode) {};
+	explicit custom_forward_list_iterator(forward_list_node<T>* ptrNode) :_data(ptrNode) {};
 
 public:
 	
@@ -59,9 +59,9 @@ class custom_forward_list
 	using size_type = typename _Allocator::size_type;
 	using pointer = T*;	
 	using ptrNode = forward_list_node<T>*;
-
-	//using iterator = custom_forward_list_iterator<list_type, pointer, reference >;
-	//using const_iterator = custom_forward_list_iterator<list_type, const_pointer, const_reference>;
+	using list_type = custom_forward_list<T, _Allocator>;
+	using iterator = custom_forward_list_iterator<value_type>;
+	using const_iterator = custom_forward_list_iterator<value_type>;
 	
 	using node_allocator = typename _Allocator::template rebind<forward_list_node <T> >::other;
 	
@@ -129,15 +129,11 @@ class custom_forward_list
 			++_size;
 		};
 
-		onewaylist_const_iterator<T> begin() noexcept {
-			return onewaylist_const_iterator<T>(_head);
-		}
-		onewaylist_const_iterator<T> end() noexcept {
-			return onewaylist_const_iterator<T>();
-		}
+		iterator begin() noexcept {	return iterator(_head);	}
+		iterator end() noexcept { return iterator(); }
 
-		//const_iterator cbegin() const noexcept { return make_iterator(_head); }
-		//const_iterator cend() const noexcept { return make_iterator(_tail); }
+		const_iterator cbegin() noexcept { return const_iterator(_head); }
+		const_iterator cend() noexcept { return const_iterator(); }		
 
 		bool empty() { return _head == nullptr; }
 		size_type size() const { return _size; }

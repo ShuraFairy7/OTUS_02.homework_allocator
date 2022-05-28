@@ -12,30 +12,30 @@ BOOST_AUTO_TEST_CASE(test_valid_version)
 	BOOST_CHECK(version() > 0);
 }
 
-BOOST_AUTO_TEST_CASE(test_custom_forward_list_iterator) 
-{
-    custom_forward_list<int> int_list;
-    int_list.push_front(1);
-    int_list.push_front(2);
-    auto iterator_begin = int_list.begin();
-    auto iterator_end = int_list.end();
-    BOOST_REQUIRE_EQUAL(*iterator_begin, 2);
-    BOOST_REQUIRE_EQUAL(*iterator_end, NULL);
-}
+//BOOST_AUTO_TEST_CASE(test_custom_forward_list_iterator) 
+//{
+//    custom_forward_list<int> int_list;
+//    int_list.push_back(1);
+//    int_list.push_back(2);
+//    auto iterator_begin = int_list.cbegin();
+//    auto iterator_end = int_list.cend();
+//    BOOST_REQUIRE_EQUAL(*iterator_begin, 2);
+//    BOOST_REQUIRE_EQUAL(*iterator_end, NULL);
+//}
 
-BOOST_AUTO_TEST_CASE(test_custom_forward_list_case_1) 
-{
-    custom_forward_list<int> int_list;
-    int_list.push_front(3);
-    int_list.push_front(2);
-    int_list.push_front(1);
-    BOOST_REQUIRE_EQUAL(int_list.size(), 3);
-}
+//BOOST_AUTO_TEST_CASE(test_custom_forward_list_case_1) 
+//{
+//    custom_forward_list<int> int_list;
+//    int_list.push_back(3);
+//    int_list.push_back(2);
+//    int_list.push_back(1);
+//    BOOST_REQUIRE_EQUAL(int_list.size(), 3);
+//}
 
-BOOST_AUTO_TEST_CASE(test_custom_forward_list_case_2)
-{
-    custom_forward_list<int> int_list;
-    BOOST_REQUIRE_EQUAL(int_list.empty(), 0);
-}
+//BOOST_AUTO_TEST_CASE(test_custom_forward_list_case_2)
+//{
+//    custom_forward_list<int> int_list;
+//    BOOST_REQUIRE_EQUAL(int_list.empty(), 0);
+//}
 
 BOOST_AUTO_TEST_SUITE_END()

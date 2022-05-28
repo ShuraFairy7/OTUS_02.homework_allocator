@@ -36,11 +36,11 @@ public:
 
     custom_allocator() :_allocated(nullptr), _counter(0) {
         std::cout << "map allocator constructor" << std::endl;
-        _allocated = _allocated = std::malloc(BLOCK_SIZE * sizeof(T));
+        _allocated = std::malloc(BLOCK_SIZE * sizeof(T));
 
-        //	Если выделить не удалось
+        //	Г…Г±Г«ГЁ ГўГ»Г¤ГҐГ«ГЁГІГј Г­ГҐ ГіГ¤Г Г«Г®Г±Гј
         if (nullptr == _allocated)
-            //	Тогда у нас проблемы
+            //	Г’Г®ГЈГ¤Г  Гі Г­Г Г± ГЇГ°Г®ГЎГ«ГҐГ¬Г»
             throw std::bad_alloc();
 
         std::cout << "allocated: " << _allocated << std::endl;
@@ -55,7 +55,7 @@ public:
         std::cout << "allocate " << n << "*" << sizeof(T) << std::endl;
         T* res(nullptr);
 
-        //	Вычислим адрес 
+        //	Г‚Г»Г·ГЁГ±Г«ГЁГ¬ Г Г¤Г°ГҐГ± 
         res = reinterpret_cast <T*> (_allocated);
         res += _counter;
         ++_counter;
@@ -160,7 +160,7 @@ public:
         }
         
         if (_pointer_first == _pointer_first_free)                    
-            _pointer_first_free = std::find(_pointer_first + n, _pointer_end, FREE);  // ищем следующюю свободную ячейку
+            _pointer_first_free = std::find(_pointer_first + n, _pointer_end, FREE);  // ГЁГ№ГҐГ¬ Г±Г«ГҐГ¤ГіГѕГ№ГѕГѕ Г±ГўГ®ГЎГ®Г¤Г­ГіГѕ ГїГ·ГҐГ©ГЄГі
                 
         const size_t offset = std::distance(_in_use, _pointer_first) * sizeof(value_type);
 
@@ -241,9 +241,9 @@ private:
     
     char* _pointer_buffer = nullptr; // Pointer to the first valid location in the buffer after alignment.
     
-    bool _in_use[_size_block];  // массив флагов для ячеек памяти, которые используются
+    bool _in_use[_size_block];  // Г¬Г Г±Г±ГЁГў ГґГ«Г ГЈГ®Гў Г¤Г«Гї ГїГ·ГҐГҐГЄ ГЇГ Г¬ГїГІГЁ, ГЄГ®ГІГ®Г°Г»ГҐ ГЁГ±ГЇГ®Г«ГјГ§ГіГѕГІГ±Гї
     
-    bool* _pointer_first_free = nullptr; // указатель на первую свободную ячейку памяти    
+    bool* _pointer_first_free = nullptr; // ГіГЄГ Г§Г ГІГҐГ«Гј Г­Г  ГЇГҐГ°ГўГіГѕ Г±ГўГ®ГЎГ®Г¤Г­ГіГѕ ГїГ·ГҐГ©ГЄГі ГЇГ Г¬ГїГІГЁ    
 };
 */
 

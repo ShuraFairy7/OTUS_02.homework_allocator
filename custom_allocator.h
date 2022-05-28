@@ -74,8 +74,8 @@ public:
 
     template<class U> struct rebind { typedef custom_allocator<U, BLOCK_SIZE> other; };
 
-    void deallocate(T* p, std::size_t n) {
-        p = p;
+    void deallocate([[maybe_unused]]T* p, std::size_t n) {
+        //p = p;
         std::cout << "deallocate " << n << std::endl;
         --_counter;
         std::cout << "counter: " << _counter << std::endl;

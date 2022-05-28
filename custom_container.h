@@ -34,14 +34,14 @@ template <typename _custom_forward_list_t, typename _pointer, typename _referenc
 class custom_forward_list_iterator : public std::iterator<
 	std::forward_iterator_tag,
 	typename _custom_forward_list_t::value_type,
-	typename _custom_forward_list_t::difference_type,
+	//typename _custom_forward_list_t::difference_type,
 	_pointer,
 	_reference> 
 {
 
 public:
 	using value_type		= typename _custom_forward_list_t::value_type;
-	using difference_type	= typename _custom_forward_list_t::difference_type;
+//	using difference_type	= typename _custom_forward_list_t::difference_type;
 	using reference			= typename _custom_forward_list_t::reference;
 	using const_reference	= typename _custom_forward_list_t::const_reference;
 	using pointer			= typename _custom_forward_list_t::pointer;
@@ -94,8 +94,9 @@ class custom_forward_list
 public:
 	using allocator_type	= _Allocator;
 	using value_type		= typename _Allocator::value_type;
-	using size_type			= typename _Allocator::size_type;
-	using difference_type	= typename _Allocator::difference_type;
+	//using size_type			= typename _Allocator::size_type;
+	using size_type = size_t;
+	//using difference_type	= typename _Allocator::difference_type;
 	using reference			= typename _Allocator::reference;
 	using const_reference	= typename _Allocator::const_reference;
 	using pointer			= typename _Allocator::pointer;

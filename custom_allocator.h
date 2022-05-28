@@ -44,7 +44,7 @@ public:
     }
     
     template<typename U>
-    custom_allocator(const custom_allocator<U, MAX_SIZE>& rhs) : _pointer_first_free(in_use)
+    custom_allocator(const custom_allocator<U, MAX_SIZE>& rhs) : _pointer_first_free(_in_use)
     {
         initialise();
     }
@@ -55,7 +55,7 @@ public:
     
     const_pointer address(const_reference x) const { return x; }
     
-    pointer allocate(size_type n, const_pointer cp = 0)
+    pointer allocate(size_type n, [[maybe_unused]] const_pointer cp = 0)
     {
 //#ifndef USE_PRETTY
 //        std::cout << "allocate: [n = " << n << "]" << std::endl;

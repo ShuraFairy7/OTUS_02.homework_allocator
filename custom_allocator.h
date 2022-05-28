@@ -18,16 +18,12 @@
 //#define USE_PRETTY 1
 
 template <typename T, std::size_t BLOCK_SIZE>
-class custom_allocator {
-private:
-    //static const size_t	_allocSize = BLOCK_SIZE;
-
-    void* _allocated;
-    size_t _counter;
+class custom_allocator 
+{
 public:
     //	Allocator traits
     using 	size_type = size_t;
-    //using difference_type	=	int;
+    using difference_type	= std::ptrdiff_t; //int;
     using pointer = T*;
     using const_pointer = const T*;
     using reference = T&;
@@ -84,6 +80,9 @@ public:
         --_counter;
         std::cout << "counter: " << _counter << std::endl;
     };
+private:
+    void* _allocated;
+    size_t _counter;
 };
 
 /*

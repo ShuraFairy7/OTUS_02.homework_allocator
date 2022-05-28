@@ -16,7 +16,7 @@ struct list_node {
 //	Константный итератор для обхода списка
 template<typename T>
 struct onewaylist_const_iterator
-{//	iterator_traits
+{
 	using _Self = onewaylist_const_iterator<T>;
 
 	//using difference_type = ptrdiff_t;
@@ -35,11 +35,11 @@ struct onewaylist_const_iterator
 
 public:
 	//	Получение ссылки на хранимый элемент
-	reference operator*() const {
+	reference operator*()  {
 		return _data->_val;
 	}
 	//	Получение указателя на хранимый элемент
-	pointer operator->() const { return &(_data->_val); }
+	pointer operator->()  { return &(_data->_val); }
 
 	//Переход к следующему элементу контейнера
 	_Self& operator++() {
@@ -126,7 +126,8 @@ template<typename T, //	хранимый тип
 		};
 
 		//	Добавляем элемент в конец списка		
-		void push_back(const T& value) {
+		void push_back(const T& value) 
+		{
 			//	Выделяем память под элемент
 			auto newElement = _createNode(value);
 
@@ -144,10 +145,10 @@ template<typename T, //	хранимый тип
 			}
 		};
 
-		onewaylist_const_iterator<T> cbegin() const noexcept {
+		onewaylist_const_iterator<T> begin() noexcept {
 			return onewaylist_const_iterator<T>(_first);
 		}
-		onewaylist_const_iterator<T> cend() noexcept {
+		onewaylist_const_iterator<T> end() noexcept {
 			return onewaylist_const_iterator<T>();
 		}
 };
